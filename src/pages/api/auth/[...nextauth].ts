@@ -1,7 +1,7 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-import { env } from "../../../env/server.mjs";
+import { env } from "env/server.mjs";
 
 export const authOptions: NextAuthOptions = {
   theme: {
