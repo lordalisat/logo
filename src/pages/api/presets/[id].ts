@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (!preset) {
         return res.status(404).send("preset not found.")
       }
-      res.json(get_preset(id));
+      return res.json(get_preset(id));
     case 'PUT':
       const session = await getServerAuthSession({ req, res });
     
@@ -35,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).json(parsedSettings.data);
     default:
       res.setHeader('Allow', ['GET', 'PUT'])
-      res.status(405).end(`Method ${method} Not Allowed`)
+      return res.status(405).send(`Method ${method} Not Allowed`)
   }
 };
 

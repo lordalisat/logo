@@ -44,7 +44,7 @@ export function get_presets(): Array<string> {
 
 export function get_preset(name: string): Settings | undefined {
   create_dirs();
-  const filePath = path.join(PRESETS_DIR, name, ".json");
+  const filePath = path.join(PRESETS_DIR, `${name}.json`);
   if (!existsSync(filePath)) {
     return;
   }
