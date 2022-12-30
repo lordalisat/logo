@@ -32,7 +32,8 @@ export function get_settings(): Settings {
 
 export function set_settings(settings: Settings) {
   create_dirs();
-  writeFileSync(SETTINGS_FILE, JSON.stringify(settings));
+  const curTime = new Date().getTime();
+  writeFileSync(SETTINGS_FILE, JSON.stringify({ ...settings, last_update: curTime }));
 }
 
 export function get_presets(): Array<string> {

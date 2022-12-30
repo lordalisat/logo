@@ -5,7 +5,7 @@ export const SettingsSchema = z.discriminatedUnion("mode", [
   z.object({
     mode: z.literal(0),
     color: z.string().regex(new RegExp("/([0-9A-F]{3}){1,2}$/")),
-    last_update: z.number()
+    last_update: z.number().optional()
   }),
   z.object({
     mode: z.literal(1),
@@ -14,7 +14,7 @@ export const SettingsSchema = z.discriminatedUnion("mode", [
       z.number(),
       z.number(),
     ]).array().nonempty(),
-    last_update: z.number()
+    last_update: z.number().optional()
   }),
 ]);
 
