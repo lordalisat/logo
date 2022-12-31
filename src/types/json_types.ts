@@ -19,3 +19,10 @@ export const SettingsSchema = z.discriminatedUnion("mode", [
 ]);
 
 export type Settings = z.infer<typeof SettingsSchema>;
+
+export const modes = {
+  "Single Color": 0,
+  "Fade Between Colors": 1
+} as const;
+
+export type modesType = typeof modes[keyof typeof modes];
