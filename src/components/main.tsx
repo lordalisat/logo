@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import { modes, type modesType } from "types/json_types";
-import ColorPicker from "./color-picker";
+import SingleColorPicker from "./color-picker";
 import FooterButtons from "./footer-buttons";
 
 export default function MainContent() {
-  const [mode, setMode] = useState<modesType>(modes["Single Color"])
-  const [color, setColor] = useState("#FFFFFF")
+  const [mode, setMode] = useState<modesType>(modes["Single Color"]);
+  const [color, setColor] = useState("#FFFFFF");
+  const [color2, setColor2] = useState("#FFFFFF")
 
   useEffect(() => console.log(mode), [mode])
 
   return <>
     <form className="flex-grow overflow-y-auto w-full max-w-md flex flex-col items-center gap-2">
-      <label htmlFor="mode-select" className="block text-sm font-medium text-gray-900 dark:text-white">
+      <label className="block text-sm font-medium text-gray-900 dark:text-white">
         Mode
       </label>
       <select
@@ -24,13 +25,23 @@ export default function MainContent() {
           <option key={mode[0]} value={mode[1]}>{mode[0]}</option>
         )}
       </select>
-      <label htmlFor="mode-select" className="block text-sm font-medium text-gray-900 dark:text-white">
+      <label className="block text-sm font-medium text-gray-900 dark:text-white">
         Color
       </label>
-      <ColorPicker
-      id="color-picker"
-        color={color}
-        onChange={ setColor } />
+      {
+        {
+          0:
+            <SingleColorPicker
+              id="color-picker"
+              color={color}
+              onChange={setColor} />,
+          1:
+            <SingleColorPicker
+              id="color-picker"
+              color={color2}
+              onChange={setColor2} />
+        }[mode]
+      }
     </form>
     <FooterButtons />
   </>
