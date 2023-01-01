@@ -6,10 +6,15 @@ import SingleColorPicker from "./single-color-picker";
 
 export default function MainContent() {
   const [mode, setMode] = useState<modesType>(modes["Single Color"]);
-  const [color, setColor] = useState("#FFFFFF");
-  const [color2, setColor2] = useState("#FFFFFF")
+  const [color, setColor] = useState<string>("#FFFFFF");
+  const [fadeColors, setFadeColors] = useState<string[]>(["#FFFFFF", "#FFFFFF"])
 
-  useEffect(() => console.log(mode), [mode])
+  const setFadeColor = (c: string, i: number) => {
+    const newColors = fadeColors;
+    newColors[i] = c;
+    setFadeColors(newColors);
+  }
+
   return <>
     <div className="flex-grow w-full overflow-y-scroll max-w-md flex flex-col items-center gap-2 px-4 scrollbar-thin scrollbar-track-gray-50 scrollbar-thumb-gray-300 dark:scrollbar-track-gray-600/[0.16] dark:scrollbar-thumb-gray-700/50 scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
       <label className="block text-sm font-medium text-gray-900 dark:text-white">
@@ -32,32 +37,21 @@ export default function MainContent() {
         {
           0:
             <SingleColorPicker
-              id="color-picker"
               color={color}
               onChange={setColor}
             />,
           1:
             <>
-              <MultiColorPicker
-                id="color-picker"
-                color={color2}
-                onChange={setColor2}
-              />
-              <MultiColorPicker
-                id="color-picker"
-                color={color2}
-                onChange={setColor2}
-              />
-              <MultiColorPicker
-                id="color-picker"
-                color={color2}
-                onChange={setColor2}
-              />
-              <MultiColorPicker
-                id="color-picker"
-                color={color2}
-                onChange={setColor2}
-              />
+              {
+                fadeColors.map((fadeColor, i) => {
+                  return <MultiColorPicker
+                    key={i}
+                    color={fadeColor}
+                    onChange={setFadeColor}
+                    i={i}
+                  />
+                })
+              }
             </>
         }[mode]
       }
