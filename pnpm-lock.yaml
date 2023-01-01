@@ -17,8 +17,10 @@ specifiers:
   react: 18.2.0
   react-colorful: ^5.6.1
   react-dom: 18.2.0
+  tailwind-scrollbar: ^2.1.0
   tailwindcss: ^3.2.0
   typescript: ^4.8.4
+  use-debouncy: ^4.4.0
   zod: ^3.18.0
 
 dependencies:
@@ -27,6 +29,7 @@ dependencies:
   react: 18.2.0
   react-colorful: 5.6.1_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
+  use-debouncy: 4.4.0_react@18.2.0
   zod: 3.20.2
 
 devDependencies:
@@ -41,6 +44,7 @@ devDependencies:
   postcss: 8.4.20
   prettier: 2.8.1
   prettier-plugin-tailwindcss: 0.1.13_prettier@2.8.1
+  tailwind-scrollbar: 2.1.0_tailwindcss@3.2.4
   tailwindcss: 3.2.4_postcss@8.4.20
   typescript: 4.9.4
 
@@ -2265,6 +2269,15 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
+  /tailwind-scrollbar/2.1.0_tailwindcss@3.2.4:
+    resolution: {integrity: sha512-zpvY5mDs0130YzYjZKBiDaw32rygxk5RyJ4KmeHjGnwkvbjm/PszON1m4Bbt2DkMRIXlXsfNevykAESgURN4KA==}
+    engines: {node: '>=12.13.0'}
+    peerDependencies:
+      tailwindcss: 3.x
+    dependencies:
+      tailwindcss: 3.2.4_postcss@8.4.20
+    dev: true
+
   /tailwindcss/3.2.4_postcss@8.4.20:
     resolution: {integrity: sha512-AhwtHCKMtR71JgeYDaswmZXhPcW9iuI9Sp2LvZPo9upDZ7231ZJ7eA9RaURbhpXGVlrjX4cFNlB4ieTetEb7hQ==}
     engines: {node: '>=12.13.0'}
@@ -2380,6 +2393,14 @@ packages:
     dependencies:
       punycode: 2.1.1
     dev: true
+
+  /use-debouncy/4.4.0_react@18.2.0:
+    resolution: {integrity: sha512-GnPFLqpObdwNxTOVKd05QlJE92gAHHXkgLZ6Qvc3/VoSWQpny7jT5J5occYOyDBYWKAYA0AcHu327Ei6odCkpg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /use-sync-external-store/1.2.0_react@18.2.0:
     resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}

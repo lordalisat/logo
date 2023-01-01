@@ -11,7 +11,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="h-screen bg-green-50 dark:bg-gray-900">
-        <div className="md:container md:mx-auto md:max-w-4xl h-full flex flex-col items-center gap-10 py-8 bg-white dark:bg-gray-800">
+        <div className="md:container md:mx-auto md:max-w-xl h-full flex flex-col items-center gap-10 py-8 bg-white dark:bg-gray-800">
           <h1 className="mb-4 text-3xl text-center font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl lg:text-5xl dark:text-white">
             B.O.O.M. LOGO <br />
             COLOR PICKER

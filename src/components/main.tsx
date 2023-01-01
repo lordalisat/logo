@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { modes, type modesType } from "types/json_types";
-import SingleColorPicker from "./color-picker";
+import ColorPicker from "./color-picker";
 import FooterButtons from "./footer-buttons";
 
 export default function MainContent() {
@@ -9,9 +9,8 @@ export default function MainContent() {
   const [color2, setColor2] = useState("#FFFFFF")
 
   useEffect(() => console.log(mode), [mode])
-
   return <>
-    <form className="flex-grow overflow-y-auto w-full max-w-md flex flex-col items-center gap-2">
+    <div className="flex-grow w-full overflow-y-scroll max-w-md flex flex-col items-center gap-2 px-4 scrollbar-thin scrollbar-track-gray-50 scrollbar-thumb-gray-300 dark:scrollbar-track-gray-600/[0.16] dark:scrollbar-thumb-gray-700/50 scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
       <label className="block text-sm font-medium text-gray-900 dark:text-white">
         Mode
       </label>
@@ -31,18 +30,42 @@ export default function MainContent() {
       {
         {
           0:
-            <SingleColorPicker
+            <ColorPicker
               id="color-picker"
               color={color}
-              onChange={setColor} />,
+              onChange={setColor}
+              isOpen={true}
+            />,
           1:
-            <SingleColorPicker
-              id="color-picker"
-              color={color2}
-              onChange={setColor2} />
+            <>
+              <ColorPicker
+                id="color-picker"
+                color={color2}
+                onChange={setColor2}
+                isOpen={true}
+              />
+              <ColorPicker
+                id="color-picker"
+                color={color2}
+                onChange={setColor2}
+                isOpen={true}
+              />
+              <ColorPicker
+                id="color-picker"
+                color={color2}
+                onChange={setColor2}
+                isOpen={true}
+              />
+              <ColorPicker
+                id="color-picker"
+                color={color2}
+                onChange={setColor2}
+                isOpen={true}
+              />
+            </>
         }[mode]
       }
-    </form>
+    </div>
     <FooterButtons />
   </>
 }
