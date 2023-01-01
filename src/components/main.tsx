@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { modes, type modesType } from "types/json_types";
-import ColorPicker from "./color-picker";
+import MultiColorPicker from "./multi-color-picker";
 import FooterButtons from "./footer-buttons";
+import SingleColorPicker from "./single-color-picker";
 
 export default function MainContent() {
   const [mode, setMode] = useState<modesType>(modes["Single Color"]);
@@ -30,37 +31,32 @@ export default function MainContent() {
       {
         {
           0:
-            <ColorPicker
+            <SingleColorPicker
               id="color-picker"
               color={color}
               onChange={setColor}
-              isOpen={true}
             />,
           1:
             <>
-              <ColorPicker
+              <MultiColorPicker
                 id="color-picker"
                 color={color2}
                 onChange={setColor2}
-                isOpen={true}
               />
-              <ColorPicker
+              <MultiColorPicker
                 id="color-picker"
                 color={color2}
                 onChange={setColor2}
-                isOpen={true}
               />
-              <ColorPicker
+              <MultiColorPicker
                 id="color-picker"
                 color={color2}
                 onChange={setColor2}
-                isOpen={true}
               />
-              <ColorPicker
+              <MultiColorPicker
                 id="color-picker"
                 color={color2}
                 onChange={setColor2}
-                isOpen={true}
               />
             </>
         }[mode]

@@ -3,7 +3,7 @@ import { HexColorInput, HexColorPicker } from "react-colorful";
 import type { ColorPickerBaseProps } from 'react-colorful/dist/types';
 import useDebouncy from 'use-debouncy/lib/effect';
 
-const ColorPicker = ({ color, onChange, isOpen }: ColorPickerBaseProps<string> & {isOpen: boolean}) => {
+const SingleColorPicker = ({ color, onChange }: ColorPickerBaseProps<string>) => {
   const [value, setValue] = useState(color);
 
   useDebouncy(() => onChange(value), 200, [value]);
@@ -22,12 +22,10 @@ const ColorPicker = ({ color, onChange, isOpen }: ColorPickerBaseProps<string> &
             prefixed={true}
           />
         </div>
-        <div id='picker' className='hidden group-focus-within:block'>
-          <HexColorPicker color={color} onChange={setValue} />
-        </div>
+        <HexColorPicker color={color} onChange={setValue} />
       </div>
     </>
   )
 }
 
-export default ColorPicker;
+export default SingleColorPicker;
