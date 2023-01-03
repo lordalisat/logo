@@ -11,8 +11,11 @@ const MultiColorPicker = ({ fade, dispatch, i, sameFadeTimes }: {fade: Fade[numb
   useDebouncy(() => dispatch({ type: "color", val: value, i: i }), 200, [value]);
 
   return (
-    <div className="w-full p-2 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
+    <div className="w-full flex flex-col p-2 gap-2 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
       <div className='group w-full flex flex-col items-center gap-2'>
+        <label className="block text-sm font-medium text-gray-900 dark:text-white">
+          Color
+        </label>
         <div tabIndex={0} className='flex w-full'>
           <span className="inline-flex w-10 items-center px-3 text-sm text-gray-900 rounded-l-md border border-r-0 border-gray-300 dark:text-gray-400 dark:border-gray-600"
           style={{backgroundColor: value}}>

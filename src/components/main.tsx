@@ -36,11 +36,11 @@ export default function MainContent() {
   const [mode, setMode] = useState<modesType>("Single Color");
   const [color, setColor] = useState<string>("#FFFFFF");
   const [fades, setFades] = useReducer<Reducer<Fade, FadeAction>>(fadeReducer, [["#FFFFFF", 2000, 1000], ["#FFFFFF", 2000, 1000]])
-  // const [fadeColors, setFadeColors] = useState<string[]>(["#FFFFFF", "#FFFFFF"]);
-  // const [fadeTimes, setFadeTimes] = useState<[number, number][]>([[2000, 1000], [2000, 1000]]);
   const [sameFadeTimes, setSameFadeTimes] = useState<boolean>(false);
 
-  // useEffect(() => console.log(fadeTimes));
+  function toggleSameFadeTimes() {
+    setSameFadeTimes((prev) => !prev);
+  }
 
   return <>
     <div className="flex-grow w-full overflow-y-scroll max-w-md flex flex-col items-center gap-2 px-4 scrollbar-thin scrollbar-track-gray-50 scrollbar-thumb-gray-300 dark:scrollbar-track-gray-600/[0.16] dark:scrollbar-thumb-gray-700/50 scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
@@ -57,9 +57,6 @@ export default function MainContent() {
           <option key={mode} value={mode}>{mode}</option>
         )}
       </select>
-      <label className="block text-sm font-medium text-gray-900 dark:text-white">
-        Color
-      </label>
       {
         {
           [modes[0]]:<SingleColorPicker
@@ -69,12 +66,17 @@ export default function MainContent() {
           [modes[1]]:
             (
               <>
+                <div className="flex items-center mb-4">
+                  <input id="sameFadeTimes" type="checkbox" checked={sameFadeTimes} onChange={toggleSameFadeTimes} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                  <label htmlFor="sameFadeTimes" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Same Fade Times for all Colors</label>
+              </div>
                 {
-                (sameFadeTimes && <FadeTimes 
+                (sameFadeTimes && <div className="w-full flex flex-col p-2 gap-2 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
+                <FadeTimes 
                   fade={fades[0]}
                   dispatch={setFades}
                   i={0}
-                  sameFadeTimes={sameFadeTimes} />)
+                  sameFadeTimes={sameFadeTimes} /></div>)
                 }
                 {
                   fades.map((fade, i) => {
