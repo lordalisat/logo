@@ -9,7 +9,7 @@ const SingleColorPicker = ({ color, onChange }: ColorPickerBaseProps<string>) =>
   useDebouncy(() => onChange(value), 200, [value]);
 
   return (
-    <>
+    <div className="w-full p-2 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
       <div className='group w-full flex flex-col items-center gap-2'>
         <div tabIndex={0} className='flex w-full'>
           <span className="inline-flex w-10 items-center px-3 text-sm text-gray-900 rounded-l-md border border-r-0 border-gray-300 dark:text-gray-400 dark:border-gray-600"
@@ -24,7 +24,7 @@ const SingleColorPicker = ({ color, onChange }: ColorPickerBaseProps<string>) =>
         </div>
         <HexColorPicker color={color} onChange={setValue} />
       </div>
-    </>
+    </div>
   )
 }
 

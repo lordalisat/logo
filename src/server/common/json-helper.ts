@@ -1,7 +1,7 @@
 import { env } from "env/server.mjs";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
-import type { Settings } from "types/json_types";
+import type { CurSettings, Settings } from "types/json_types";
 
 const SETTINGS_FILE = path.join(env.SETTINGS_PATH, "current.json");
 const PRESETS_DIR = path.join(env.SETTINGS_PATH, "presets");
@@ -15,14 +15,14 @@ function create_dirs() {
   }
 }
 
-function load_defaults(): Settings {
+function load_defaults(): CurSettings {
   const curTime = new Date().getTime();
-  const defaults = { mode: 0, color: "00ff11", last_update: curTime } as const;
+  const defaults: CurSettings = { mode: 0, color: "00ff11", last_update: curTime } as const;
   writeFileSync(SETTINGS_FILE, JSON.stringify(defaults));
   return defaults;
 }
 
-export function get_settings(): Settings {
+export function get_settings(): CurSettings {
   create_dirs();
   if (!existsSync(SETTINGS_FILE)) {
     return load_defaults();

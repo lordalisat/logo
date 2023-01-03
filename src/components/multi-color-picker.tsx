@@ -1,14 +1,17 @@
-import React, { useState } from 'react'
+import React, { type Dispatch, useState } from 'react'
 import { HexColorInput, HexColorPicker } from "react-colorful";
+import type { Fade } from 'types/json_types';
 import useDebouncy from 'use-debouncy/lib/effect';
+import FadeTimes from './fade-times';
+import type { FadeAction } from './main';
 
-const MultiColorPicker = ({ color, onChange, i }: {color: string, onChange: (newColor: string, i: number) => void, i: number}) => {
-  const [value, setValue] = useState(color);
+const MultiColorPicker = ({ fade, dispatch, i, sameFadeTimes }: {fade: Fade[number], dispatch: Dispatch<FadeAction>, i: number, sameFadeTimes: boolean}) => {
+  const [value, setValue] = useState(fade[0]);
 
-  useDebouncy(() => onChange(value, i), 300, [value]);
+  useDebouncy(() => dispatch({ type: "color", val: value, i: i }), 200, [value]);
 
   return (
-    <>
+    <div className="w-full p-2 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
       <div className='group w-full flex flex-col items-center gap-2'>
         <div tabIndex={0} className='flex w-full'>
           <span className="inline-flex w-10 items-center px-3 text-sm text-gray-900 rounded-l-md border border-r-0 border-gray-300 dark:text-gray-400 dark:border-gray-600"
@@ -25,7 +28,17 @@ const MultiColorPicker = ({ color, onChange, i }: {color: string, onChange: (new
           <HexColorPicker color={value} onChange={setValue} />
         </div>
       </div>
-    </>
+      {
+        (
+          !sameFadeTimes && <FadeTimes
+            fade={fade}
+            dispatch={dispatch}
+            i={i}
+            sameFadeTimes={sameFadeTimes}
+          />
+        )
+      }
+    </div>
   )
 }
 
