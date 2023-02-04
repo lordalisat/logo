@@ -1,8 +1,24 @@
-import { type NextPage } from "next";
+import MainContent from "components/main";
+import { GetServerSideProps } from "next";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
-import Content from "../components/content";
+import { useEffect } from "react";
+import { get_settings } from "server/common/json-helper";
+import { Fade, modes, modesType } from "types/json_types";
 
-const Home: NextPage = () => {
+const Home = ({
+  initMode,
+  initFades,
+  initSameFadeTimes,
+}: {
+  initMode: modesType,
+  initFades: Fade,
+  initSameFadeTimes: boolean,
+}) => {
+  const { status } = useSession()
+
+  useEffect(() => { if (status === "unauthenticated") signIn('google') }, [status]);
+
   return (
     <>
       <Head>
@@ -11,12 +27,12 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="h-screen bg-green-50 dark:bg-gray-900">
-        <div className="md:container md:mx-auto md:max-w-xl h-full flex flex-col items-center gap-10 py-8 bg-white dark:bg-gray-800">
-          <h1 className="mb-4 text-3xl text-center font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl lg:text-5xl dark:text-white">
+        <div className="flex h-full flex-col items-center gap-10 bg-white py-8 dark:bg-gray-800 md:container md:mx-auto md:max-w-xl">
+          <h1 className="mb-4 text-center text-3xl font-extrabold leading-none tracking-tight text-gray-900 dark:text-white md:text-4xl lg:text-5xl">
             B.O.O.M. LOGO <br />
             COLOR PICKER
           </h1>
-          <Content />
+          <MainContent initMode={initMode} initFades={initFades} initSameFadeTimes={initSameFadeTimes} />
         </div>
       </main>
     </>
@@ -24,3 +40,17 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+
+export async function getServerSideProps() {
+  const curSettings = get_settings();
+
+  const initFades = curSettings.mode === 0 ? [[curSettings.color, 2000, 1000]] : curSettings.fades;
+
+  const initSameFadeTimes = curSettings.mode === 0 ||
+    (curSettings.fades.every(val => val[1] === curSettings.fades[0][1] && val[2] === curSettings.fades[0][2]));
+
+  return {
+    props: { initMode: modes[curSettings.mode], initFades, initSameFadeTimes },
+  };
+}

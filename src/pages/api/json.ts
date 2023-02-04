@@ -13,20 +13,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     case 'GET':
       // Get data from your database
       return res.status(200).json(get_settings())
-    case 'PUT':
+    case 'POST':
       const session = await getServerAuthSession({ req, res });
-    
+
       if (!session) {
         return res.status(403).send("Forbidden");
       }
-      const parsedSettings = SettingsSchema.safeParse(settings);
+      const parsedSettings = SettingsSchema.safeParse(JSON.parse(req.body));
       if (!parsedSettings.success) {
         return res.status(400).send(parsedSettings.error);
       }
       set_settings(parsedSettings.data);
       return res.status(200).json(parsedSettings.data);
     default:
-      res.setHeader('Allow', ['GET', 'PUT'])
+      res.setHeader('Allow', ['GET', 'POST'])
       res.status(405).end(`Method ${method} Not Allowed`)
   }
 };

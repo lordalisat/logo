@@ -23,7 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.json(get_preset(id));
     case 'PUT':
       const session = await getServerAuthSession({ req, res });
-    
+
       if (!session) {
         return res.status(403).send("Forbidden");
       }
