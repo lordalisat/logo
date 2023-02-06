@@ -56,9 +56,8 @@ const MultiColorPicker = ({
           />
         )}
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 justify-center">
         {i > 0 && (<button
-          disabled={i == 0}
           className="p-2 text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
           onClick={() => dispatch({ type: "moveFadeUp", i: i })}
         >
@@ -97,7 +96,6 @@ const MultiColorPicker = ({
           </svg>
         </button>
         {i < fadeLength - 1 && (<button
-          disabled={i == fadeLength - 1}
           className="p-2 text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
           onClick={() => dispatch({ type: "moveFadeDown", i: i })}
         >
