@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState, type Reducer } from "react";
+import { useReducer, useState, type Reducer } from "react";
 import { type Fade, modes, type modesType } from "types/json_types";
 import MultiColorPicker from "./multi-color-picker";
 import SingleColorPicker from "./single-color-picker";
@@ -9,7 +9,11 @@ export type FadeAction =
   | { type: "duration"; val: number; i: number }
   | { type: "fadeDuration"; val: number; i: number }
   | { type: "sameDuration"; val: number }
-  | { type: "sameFadeDuration"; val: number };
+  | { type: "sameFadeDuration"; val: number }
+  | { type: "addFade" }
+  | { type: "removeFade"; i: number }
+  | { type: "moveFadeUp"; i: number }
+  | { type: "moveFadeDown"; i: number };
 
 function fadeReducer(state: Fade, action: FadeAction): Fade {
   switch (action.type) {
@@ -29,6 +33,39 @@ function fadeReducer(state: Fade, action: FadeAction): Fade {
       return state.map((fade) => [fade[0], action.val, fade[2]]) as Fade;
     case "sameFadeDuration":
       return state.map((fade) => [fade[0], fade[1], action.val]) as Fade;
+    case "addFade":
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return [...state, state.at(-1)!];
+    case "removeFade": {
+      const newState = state.filter((_val, idx) => idx !== action.i);
+      return newState.length > 0
+        ? ([...newState] as Fade)
+        : [["#FFFFFF", 2000, 1000]];
+    }
+    case "moveFadeUp": {
+      const newState = [...state];
+      if (action.i > 0 && action.i <= state.length - 1) {
+        [newState[action.i], newState[action.i - 1]] = [
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          state[action.i - 1]!,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          state[action.i]!,
+        ];
+      }
+      return [...newState] as Fade;
+    }
+    case "moveFadeDown": {
+      const newState = [...state];
+      if (action.i >= 0 && action.i < state.length - 1) {
+        [newState[action.i], newState[action.i + 1]] = [
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          state[action.i + 1]!,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          state[action.i]!,
+        ];
+      }
+      return [...newState] as Fade;
+    }
   }
 }
 
@@ -37,13 +74,17 @@ export default function MainContent({
   initFades,
   initSameFadeTimes,
 }: {
-    initMode: modesType,
-    initFades: Fade,
-    initSameFadeTimes: boolean,
+  initMode: modesType;
+  initFades: Fade;
+  initSameFadeTimes: boolean;
 }) {
   const [mode, setMode] = useState<modesType>(initMode);
-  const [fades, setFades] = useReducer<Reducer<Fade, FadeAction>>(fadeReducer, initFades);
-  const [sameFadeTimes, setSameFadeTimes] = useState<boolean>(initSameFadeTimes);
+  const [fades, setFades] = useReducer<Reducer<Fade, FadeAction>>(
+    fadeReducer,
+    initFades
+  );
+  const [sameFadeTimes, setSameFadeTimes] =
+    useState<boolean>(initSameFadeTimes);
 
   function toggleSameFadeTimes() {
     setSameFadeTimes((prev) => !prev);
@@ -52,10 +93,16 @@ export default function MainContent({
   function save() {
     switch (mode) {
       case modes[0]:
-        fetch('/api/json', { method: 'POST', body: JSON.stringify({ mode: 0, color: fades[0][0] }) });
+        fetch("/api/json", {
+          method: "POST",
+          body: JSON.stringify({ mode: 0, color: fades[0][0] }),
+        });
         break;
       case modes[1]:
-        fetch('/api/json', { method: 'POST', body: JSON.stringify({ mode: 1, fades: fades }) });
+        fetch("/api/json", {
+          method: "POST",
+          body: JSON.stringify({ mode: 1, fades: fades }),
+        });
     }
   }
 
@@ -117,14 +164,21 @@ export default function MainContent({
                 {fades.map((fade, i) => {
                   return (
                     <MultiColorPicker
-                      key={i}
+                      key={fade.toString() + i}
                       fade={fade}
                       dispatch={setFades}
                       i={i}
                       sameFadeTimes={sameFadeTimes}
+                      fadeLength={fades.length}
                     />
                   );
                 })}
+                <button
+                  className="mr-2 mb-2 w-36 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300 hover:bg-blue-800 dark:bg-blue-600 dark:focus:ring-blue-800 dark:hover:bg-blue-700"
+                  onClick={() => setFades({ type: "addFade" })}
+                >
+                  Add Fade
+                </button>
               </>
             ),
           }[mode]
@@ -138,8 +192,10 @@ export default function MainContent({
         <button className="mr-2 mb-2 w-36 rounded-lg border border-gray-200 bg-white py-2.5 px-5 text-sm font-medium text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:focus:ring-gray-700 dark:hover:bg-gray-700 dark:hover:text-white">
           Save Preset
         </button>
-        <button className="mr-2 mb-2 w-36 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300 hover:bg-blue-800 dark:bg-blue-600 dark:focus:ring-blue-800 dark:hover:bg-blue-700"
-          onClick={save}>
+        <button
+          className="mr-2 mb-2 w-36 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300 hover:bg-blue-800 dark:bg-blue-600 dark:focus:ring-blue-800 dark:hover:bg-blue-700"
+          onClick={save}
+        >
           Save
         </button>
       </div>

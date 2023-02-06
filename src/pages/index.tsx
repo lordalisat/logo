@@ -1,10 +1,9 @@
 import MainContent from "components/main";
-import { GetServerSideProps } from "next";
 import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useEffect } from "react";
 import { get_settings } from "server/common/json-helper";
-import { Fade, modes, modesType } from "types/json_types";
+import { type Fade, modes, type modesType } from "types/json_types";
 
 const Home = ({
   initMode,
@@ -50,6 +49,8 @@ export async function getServerSideProps() {
   const initSameFadeTimes = curSettings.mode === 0 ||
     (curSettings.fades.every(val => val[1] === curSettings.fades[0][1] && val[2] === curSettings.fades[0][2]));
 
+  initFades.forEach((fade) => fade[0] = `#${fade[0]}`);
+  
   return {
     props: { initMode: modes[curSettings.mode], initFades, initSameFadeTimes },
   };

@@ -33,6 +33,12 @@ export function get_settings(): CurSettings {
 export function set_settings(settings: Settings) {
   create_dirs();
   const curTime = new Date().getTime();
+  if (settings.mode === 0) {
+    settings.color.replace("#", "");
+  }
+  else if (settings.mode === 1) {
+    settings.fades.forEach((fade) => fade[0].replace("#", ""));
+  }
   fs.writeFileSync(SETTINGS_FILE, JSON.stringify({ ...settings, last_update: curTime }));
 }
 

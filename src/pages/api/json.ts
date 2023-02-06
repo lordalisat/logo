@@ -5,7 +5,7 @@ import { SettingsSchema } from "types/json_types";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const {
-    body: { settings },
+    body,
     method,
   } = req
 
@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (!session) {
         return res.status(403).send("Forbidden");
       }
-      const parsedSettings = SettingsSchema.safeParse(JSON.parse(req.body));
+      const parsedSettings = SettingsSchema.safeParse(JSON.parse(body));
       if (!parsedSettings.success) {
         return res.status(400).send(parsedSettings.error);
       }
