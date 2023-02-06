@@ -3,11 +3,11 @@ import { z } from "zod";
 
 const SingleColorSchema = z.object({
   mode: z.literal(0),
-  color: z.string().transform((val) => val.replace('#', '')),
+  color: z.string().regex(new RegExp("#?([A-Fa-f0-9]{3}){1,2}")).transform((val) => val.replace('#', '')),
 });
 
 const FadeSchema = z.tuple([
-  z.string().transform((val) => val.replace('#', '')),
+  z.string().regex(new RegExp("#?([A-Fa-f0-9]{3}){1,2}")).transform((val) => val.replace('#', '')),
   z.number(),
   z.number(),
 ]).array().nonempty();
