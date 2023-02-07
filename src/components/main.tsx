@@ -1,5 +1,10 @@
 import { useEffect, useReducer, useState, type Reducer } from "react";
-import { type Fade, modes, type modesType } from "types/json_types";
+import {
+  type Fade,
+  modes,
+  type modesType,
+  save_settings,
+} from "types/json_types";
 import MultiColorPicker from "./multi-color-picker";
 import SingleColorPicker from "./single-color-picker";
 import FadeTimes from "./fade-times";
@@ -30,9 +35,19 @@ function fadeReducer(state: Fade, action: FadeAction): Fade {
         idx === action.i ? [fade[0], fade[1], action.val, fade[3]] : [...fade]
       ) as Fade;
     case "sameDuration":
-      return state.map((fade) => [fade[0], action.val, fade[2], fade[3]]) as Fade;
+      return state.map((fade) => [
+        fade[0],
+        action.val,
+        fade[2],
+        fade[3],
+      ]) as Fade;
     case "sameFadeDuration":
-      return state.map((fade) => [fade[0], fade[1], action.val, fade[3]]) as Fade;
+      return state.map((fade) => [
+        fade[0],
+        fade[1],
+        action.val,
+        fade[3],
+      ]) as Fade;
     case "addFade":
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const newFade = [...state.at(-1)!] as Fade[number];
@@ -96,19 +111,10 @@ export default function MainContent({
   useEffect(() => console.log(fades), [fades]);
 
   function save() {
-    switch (mode) {
-      case modes[0]:
-        fetch("/api/json", {
-          method: "POST",
-          body: JSON.stringify({ mode: 0, color: fades[0][0] }),
-        });
-        break;
-      case modes[1]:
-        fetch("/api/json", {
-          method: "POST",
-          body: JSON.stringify({ mode: 1, fades: fades.map((fade) => [fade[0], fade[1], fade[2]]) }),
-        });
-    }
+    fetch("/api/json", {
+      method: "POST",
+      body: JSON.stringify(save_settings(mode, fades)),
+    });
   }
 
   return (

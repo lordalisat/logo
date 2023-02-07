@@ -3,20 +3,22 @@ import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useEffect } from "react";
 import { get_settings } from "server/common/json-helper";
-import { type Fade, modes, type modesType } from "types/json_types";
+import { type Fade, type modesType, load_settings } from "types/json_types";
 
 const Home = ({
   initMode,
   initFades,
   initSameFadeTimes,
 }: {
-  initMode: modesType,
-  initFades: Fade,
-  initSameFadeTimes: boolean,
+  initMode: modesType;
+  initFades: Fade;
+  initSameFadeTimes: boolean;
 }) => {
-  const { status } = useSession()
+  const { status } = useSession();
 
-  useEffect(() => { if (status === "unauthenticated") signIn('google') }, [status]);
+  useEffect(() => {
+    if (status === "unauthenticated") signIn("google");
+  }, [status]);
 
   return (
     <>
@@ -31,7 +33,11 @@ const Home = ({
             B.O.O.M. LOGO <br />
             COLOR PICKER
           </h1>
-          <MainContent initMode={initMode} initFades={initFades} initSameFadeTimes={initSameFadeTimes} />
+          <MainContent
+            initMode={initMode}
+            initFades={initFades}
+            initSameFadeTimes={initSameFadeTimes}
+          />
         </div>
       </main>
     </>
@@ -40,21 +46,16 @@ const Home = ({
 
 export default Home;
 
-
 export async function getServerSideProps() {
   const curSettings = get_settings();
 
-  const initFades = curSettings.mode === 0 ? [[curSettings.color, 2000, 1000]] : curSettings.fades;
+  const { mode, fades, sameFadeTimes } = load_settings(curSettings);
 
-  const initSameFadeTimes = curSettings.mode === 0 ||
-    (curSettings.fades.every(val => val[1] === curSettings.fades[0][1] && val[2] === curSettings.fades[0][2]));
-
-  initFades.forEach((fade) => {
-    fade[0] = `#${fade[0]}`;
-    fade[3] = Math.random().toString(20).slice(2, 6);
-  });
-  
   return {
-    props: { initMode: modes[curSettings.mode], initFades, initSameFadeTimes },
+    props: {
+      initMode: mode,
+      initFades: fades,
+      initSameFadeTimes: sameFadeTimes,
+    },
   };
 }
