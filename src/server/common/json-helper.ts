@@ -17,7 +17,7 @@ function create_dirs() {
 
 function load_defaults(): CurSettings {
   const curTime = new Date().getTime();
-  const defaults: CurSettings = { mode: 0, color: "00ff11", last_update: curTime } as const;
+  const defaults: CurSettings = { mode: 0, color: "00ff11", last_update: curTime };
   fs.writeFileSync(SETTINGS_FILE, JSON.stringify(defaults));
   return defaults;
 }

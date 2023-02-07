@@ -1,4 +1,4 @@
-import { useReducer, useState, type Reducer } from "react";
+import { useEffect, useReducer, useState, type Reducer } from "react";
 import { type Fade, modes, type modesType } from "types/json_types";
 import MultiColorPicker from "./multi-color-picker";
 import SingleColorPicker from "./single-color-picker";
@@ -19,28 +19,31 @@ function fadeReducer(state: Fade, action: FadeAction): Fade {
   switch (action.type) {
     case "color":
       return state.map((fade, idx) =>
-        idx === action.i ? [action.val, fade[1], fade[2]] : [...fade]
+        idx === action.i ? [action.val, fade[1], fade[2], fade[3]] : [...fade]
       ) as Fade;
     case "duration":
       return state.map((fade, idx) =>
-        idx === action.i ? [fade[0], action.val, fade[2]] : [...fade]
+        idx === action.i ? [fade[0], action.val, fade[2], fade[3]] : [...fade]
       ) as Fade;
     case "fadeDuration":
       return state.map((fade, idx) =>
-        idx === action.i ? [fade[0], fade[1], action.val] : [...fade]
+        idx === action.i ? [fade[0], fade[1], action.val, fade[3]] : [...fade]
       ) as Fade;
     case "sameDuration":
-      return state.map((fade) => [fade[0], action.val, fade[2]]) as Fade;
+      return state.map((fade) => [fade[0], action.val, fade[2], fade[3]]) as Fade;
     case "sameFadeDuration":
-      return state.map((fade) => [fade[0], fade[1], action.val]) as Fade;
+      return state.map((fade) => [fade[0], fade[1], action.val, fade[3]]) as Fade;
     case "addFade":
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return [...state, state.at(-1)!];
+      const newFade = [...state.at(-1)!] as Fade[number];
+      newFade[3] = Math.random().toString(20).slice(2, 6);
+      return [...state, newFade];
     case "removeFade": {
       const newState = state.filter((_val, idx) => idx !== action.i);
+      const randomId = Math.random().toString(20).slice(2, 6);
       return newState.length > 0
         ? ([...newState] as Fade)
-        : [["#FFFFFF", 2000, 1000]];
+        : [["#FFFFFF", 2000, 1000, randomId]];
     }
     case "moveFadeUp": {
       const newState = [...state];
@@ -90,6 +93,8 @@ export default function MainContent({
     setSameFadeTimes((prev) => !prev);
   }
 
+  useEffect(() => console.log(fades), [fades]);
+
   function save() {
     switch (mode) {
       case modes[0]:
@@ -101,7 +106,7 @@ export default function MainContent({
       case modes[1]:
         fetch("/api/json", {
           method: "POST",
-          body: JSON.stringify({ mode: 1, fades: fades }),
+          body: JSON.stringify({ mode: 1, fades: fades.map((fade) => [fade[0], fade[1], fade[2]]) }),
         });
     }
   }
@@ -164,7 +169,7 @@ export default function MainContent({
                 {fades.map((fade, i) => {
                   return (
                     <MultiColorPicker
-                      key={fade.toString() + i}
+                      key={fade[3]}
                       fade={fade}
                       dispatch={setFades}
                       i={i}

@@ -22,12 +22,10 @@ export const SettingsSchema = z.discriminatedUnion("mode", [
   SingleColorSchema, FadeColorsSchema,
 ]);
 
-export type Fade = z.infer<typeof FadeSchema>;
-
 export type Settings = z.infer<typeof SettingsSchema>;
-
 export type CurSettings = Settings & { last_update: number };
 
-export const modes = ["Single Color", "Fade Between Colors"] as const;
+export type Fade = [[string, number, number, string], ...[string, number, number, string][]];
 
+export const modes = ["Single Color", "Fade Between Colors"] as const;
 export type modesType = typeof modes[number];

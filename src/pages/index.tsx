@@ -49,7 +49,10 @@ export async function getServerSideProps() {
   const initSameFadeTimes = curSettings.mode === 0 ||
     (curSettings.fades.every(val => val[1] === curSettings.fades[0][1] && val[2] === curSettings.fades[0][2]));
 
-  initFades.forEach((fade) => fade[0] = `#${fade[0]}`);
+  initFades.forEach((fade) => {
+    fade[0] = `#${fade[0]}`;
+    fade[3] = Math.random().toString(20).slice(2, 6);
+  });
   
   return {
     props: { initMode: modes[curSettings.mode], initFades, initSameFadeTimes },
