@@ -1,5 +1,4 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
-import { getServerAuthSession } from "server/common/get-server-auth-session";
 import { add_preset, get_preset } from "server/common/json-helper";
 import { SettingsSchema } from "types/json_types";
 
@@ -8,25 +7,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     query: { id },
     body: { settings },
     method,
-  } = req
+  } = req;
 
   if (typeof id !== "string") {
     return res.status(400).send("Incorrect name param");
   }
 
   switch (method) {
-    case 'GET':
+    case "GET":
       const preset = get_preset(id);
       if (!preset) {
-        return res.status(404).send("preset not found.")
+        return res.status(404).send("preset not found.");
       }
       return res.json(get_preset(id));
-    case 'PUT':
-      const session = await getServerAuthSession({ req, res });
-
-      if (!session) {
-        return res.status(403).send("Forbidden");
-      }
+    case "PUT":
       const parsedSettings = SettingsSchema.safeParse(settings);
       if (!parsedSettings.success) {
         return res.status(400).send(parsedSettings.error);
@@ -34,8 +28,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       add_preset(id, parsedSettings.data);
       return res.status(200).json(parsedSettings.data);
     default:
-      res.setHeader('Allow', ['GET', 'PUT'])
-      return res.status(405).send(`Method ${method} Not Allowed`)
+      res.setHeader("Allow", ["GET", "PUT"]);
+      return res.status(405).send(`Method ${method} Not Allowed`);
   }
 };
 

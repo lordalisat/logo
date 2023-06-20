@@ -164,7 +164,7 @@ export default function MainContent({
                 {fades.map((fade, i) => {
                   return (
                     <MultiColorPicker
-                      key={fade.toString() + i}
+                      key={i}
                       fade={fade}
                       dispatch={setFades}
                       i={i}
@@ -174,7 +174,7 @@ export default function MainContent({
                   );
                 })}
                 <button
-                  className="mr-2 mb-2 w-36 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300 hover:bg-blue-800 dark:bg-blue-600 dark:focus:ring-blue-800 dark:hover:bg-blue-700"
+                  className="mb-2 mr-2 w-36 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300 hover:bg-blue-800 dark:bg-blue-600 dark:focus:ring-blue-800 dark:hover:bg-blue-700"
                   onClick={() => setFades({ type: "addFade" })}
                 >
                   Add Fade
@@ -186,14 +186,14 @@ export default function MainContent({
       </div>
 
       <div className="flex flex-row flex-wrap justify-center">
-        <button className="mr-2 mb-2 w-36 rounded-lg border border-gray-200 bg-white py-2.5 px-5 text-sm font-medium text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:focus:ring-gray-700 dark:hover:bg-gray-700 dark:hover:text-white">
+        <button className="mb-2 mr-2 w-36 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:focus:ring-gray-700 dark:hover:bg-gray-700 dark:hover:text-white">
           Load Preset
         </button>
-        <button className="mr-2 mb-2 w-36 rounded-lg border border-gray-200 bg-white py-2.5 px-5 text-sm font-medium text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:focus:ring-gray-700 dark:hover:bg-gray-700 dark:hover:text-white">
+        <button className="mb-2 mr-2 w-36 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:focus:ring-gray-700 dark:hover:bg-gray-700 dark:hover:text-white">
           Save Preset
         </button>
         <button
-          className="mr-2 mb-2 w-36 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300 hover:bg-blue-800 dark:bg-blue-600 dark:focus:ring-blue-800 dark:hover:bg-blue-700"
+          className="mb-2 mr-2 w-36 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300 hover:bg-blue-800 dark:bg-blue-600 dark:focus:ring-blue-800 dark:hover:bg-blue-700"
           onClick={save}
         >
           Save
