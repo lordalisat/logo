@@ -49,7 +49,6 @@ function fadeReducer(state: Fade, action: FadeAction): Fade {
       return [...newState] as Fade;
     }
     case "moveFadeDown": {
-      console.log("fade");
       const newState = [...state];
       if (action.i >= 0 && action.i < state.length - 1) {
         [newState[action.i], newState[action.i + 1]] = [
