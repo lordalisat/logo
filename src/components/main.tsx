@@ -8,8 +8,6 @@ export type FadeAction =
   | { type: "color"; val: string; i: number }
   | { type: "duration"; val: number; i: number }
   | { type: "fadeDuration"; val: number; i: number }
-  | { type: "sameDuration"; val: number }
-  | { type: "sameFadeDuration"; val: number }
   | { type: "addFade" }
   | { type: "removeFade"; i: number }
   | { type: "moveFadeUp"; i: number }
@@ -29,10 +27,6 @@ function fadeReducer(state: Fade, action: FadeAction): Fade {
       return state.map((fade, idx) =>
         idx === action.i ? [fade[0], fade[1], action.val] : [...fade]
       ) as Fade;
-    case "sameDuration":
-      return state.map((fade) => [fade[0], action.val, fade[2]]) as Fade;
-    case "sameFadeDuration":
-      return state.map((fade) => [fade[0], fade[1], action.val]) as Fade;
     case "addFade":
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return [...state, state.at(-1)!];
@@ -55,6 +49,7 @@ function fadeReducer(state: Fade, action: FadeAction): Fade {
       return [...newState] as Fade;
     }
     case "moveFadeDown": {
+      console.log("fade");
       const newState = [...state];
       if (action.i >= 0 && action.i < state.length - 1) {
         [newState[action.i], newState[action.i + 1]] = [
@@ -72,7 +67,6 @@ function fadeReducer(state: Fade, action: FadeAction): Fade {
 export default function MainContent({
   initMode,
   initFades,
-  initSameFadeTimes,
 }: {
   initMode: modesType;
   initFades: Fade;
@@ -83,12 +77,6 @@ export default function MainContent({
     fadeReducer,
     initFades
   );
-  const [sameFadeTimes, setSameFadeTimes] =
-    useState<boolean>(initSameFadeTimes);
-
-  function toggleSameFadeTimes() {
-    setSameFadeTimes((prev) => !prev);
-  }
 
   function save() {
     switch (mode) {
@@ -136,31 +124,6 @@ export default function MainContent({
             ),
             [modes[1]]: (
               <>
-                <div className="mb-4 flex items-center">
-                  <input
-                    id="sameFadeTimes"
-                    type="checkbox"
-                    checked={sameFadeTimes}
-                    onChange={toggleSameFadeTimes}
-                    className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                  />
-                  <label
-                    htmlFor="sameFadeTimes"
-                    className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Same Fade Times for all Colors
-                  </label>
-                </div>
-                {sameFadeTimes && (
-                  <div className="flex w-full flex-col gap-2 rounded-lg border border-gray-200 bg-white p-2 shadow-md dark:border-gray-700 dark:bg-gray-800">
-                    <FadeTimes
-                      fade={fades[0]}
-                      dispatch={setFades}
-                      i={0}
-                      sameFadeTimes={sameFadeTimes}
-                    />
-                  </div>
-                )}
                 {fades.map((fade, i) => {
                   return (
                     <MultiColorPicker
@@ -168,7 +131,6 @@ export default function MainContent({
                       fade={fade}
                       dispatch={setFades}
                       i={i}
-                      sameFadeTimes={sameFadeTimes}
                       fadeLength={fades.length}
                     />
                   );

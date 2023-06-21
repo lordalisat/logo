@@ -7,21 +7,17 @@ const FadeTimes = ({
   fade,
   dispatch,
   i,
-  sameFadeTimes,
 }: {
   fade: Fade[number];
   dispatch: Dispatch<FadeAction>;
   i: number;
-  sameFadeTimes: boolean;
 }) => {
   const [duration, setDuration] = useState(fade[1]);
   const [fadeDuration, setFadeDuration] = useState(fade[2]);
 
   useDebouncy(
     () => {
-      sameFadeTimes
-        ? dispatch({ type: "sameFadeDuration", val: fadeDuration })
-        : dispatch({ type: "fadeDuration", val: fadeDuration, i: i });
+      dispatch({ type: "fadeDuration", val: fadeDuration, i: i });
     },
     200,
     [fadeDuration]
@@ -29,9 +25,7 @@ const FadeTimes = ({
 
   useDebouncy(
     () => {
-      sameFadeTimes
-        ? dispatch({ type: "sameDuration", val: duration })
-        : dispatch({ type: "duration", val: duration, i: i });
+      dispatch({ type: "duration", val: duration, i: i });
     },
     200,
     [duration]

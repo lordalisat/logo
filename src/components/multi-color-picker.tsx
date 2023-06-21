@@ -9,13 +9,11 @@ const MultiColorPicker = ({
   fade,
   dispatch,
   i,
-  sameFadeTimes,
   fadeLength,
 }: {
   fade: Fade[number];
   dispatch: Dispatch<FadeAction>;
   i: number;
-  sameFadeTimes: boolean;
   fadeLength: number;
 }) => {
   const [value, setValue] = useState(fade[0]);
@@ -47,37 +45,32 @@ const MultiColorPicker = ({
             <HexColorPicker color={value} onChange={setValue} />
           </div>
         </div>
-        {!sameFadeTimes && (
-          <FadeTimes
-            fade={fade}
-            dispatch={dispatch}
-            i={i}
-            sameFadeTimes={sameFadeTimes}
-          />
-        )}
+        <FadeTimes fade={fade} dispatch={dispatch} i={i} />
       </div>
-      <div className="flex flex-col gap-1 justify-center">
-        {i > 0 && (<button
-          className="p-2 text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-          onClick={() => dispatch({ type: "moveFadeUp", i: i })}
-        >
-          <svg
-            className="h-3 w-3"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+      <div className="flex flex-col justify-center gap-1">
+        {i > 0 && (
+          <button
+            className="rounded-lg border border-gray-200 bg-white p-2 text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:focus:ring-gray-700 dark:hover:bg-gray-700 dark:hover:text-white"
+            onClick={() => dispatch({ type: "moveFadeUp", i: i })}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4.5 15.75l7.5-7.5 7.5 7.5"
-            ></path>
-          </svg>
-        </button>)}
+            <svg
+              className="h-3 w-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4.5 15.75l7.5-7.5 7.5 7.5"
+              ></path>
+            </svg>
+          </button>
+        )}
         <button
-          className="p-2 text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+          className="rounded-lg border border-gray-200 bg-white p-2 text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:focus:ring-gray-700 dark:hover:bg-gray-700 dark:hover:text-white"
           onClick={() => dispatch({ type: "removeFade", i: i })}
         >
           <svg
@@ -95,25 +88,27 @@ const MultiColorPicker = ({
             ></path>
           </svg>
         </button>
-        {i < fadeLength - 1 && (<button
-          className="p-2 text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-          onClick={() => dispatch({ type: "moveFadeDown", i: i })}
-        >
-          <svg
-            className="h-3 w-3"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+        {i < fadeLength - 1 && (
+          <button
+            className="rounded-lg border border-gray-200 bg-white p-2 text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:focus:ring-gray-700 dark:hover:bg-gray-700 dark:hover:text-white"
+            onClick={() => dispatch({ type: "moveFadeDown", i: i })}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-            ></path>
-          </svg>
-        </button>)}
+            <svg
+              className="h-3 w-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+              ></path>
+            </svg>
+          </button>
+        )}
       </div>
     </div>
   );
